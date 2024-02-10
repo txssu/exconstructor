@@ -125,6 +125,11 @@ defmodule ExConstructorTest do
       ExConstructor.__using__()
     end
 
+    defmodule TestStruct6 do
+      use ExConstructor
+      defstruct field: nil
+    end
+
     context "ExConstructor.define_constructor" do
       it "uses the default constructor name" do
         assert(nil != TestStruct1.new(%{}))
@@ -155,10 +160,16 @@ defmodule ExConstructorTest do
       end
     end
 
+    context "use ExConstructor on top" do
+      it "uses the default constructor name" do
+        assert(nil != TestStruct6.new(%{}))
+      end
+    end
+
     it "raises exception on bad invocation" do
       ex =
         assert_raise(RuntimeError, fn ->
-          defmodule TestStruct6 do
+          defmodule TestStruct7 do
             defstruct field: nil
             ExConstructor.__using__(22)
           end
@@ -168,7 +179,7 @@ defmodule ExConstructorTest do
     end
 
     it "does not crash if @enforce_keys exists" do
-      defmodule TestStruct7 do
+      defmodule TestStruct8 do
         @enforce_keys :field
         defstruct field: 1
         use ExConstructor
